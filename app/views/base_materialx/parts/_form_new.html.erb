@@ -1,0 +1,20 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+  <% else %>
+  <h4><%=t('New Base Part') %></h4>
+<%= simple_form_for @part do |f| %>  
+      <%= f.input :name, :label => t('Part Name') %>  
+	  <%= f.input :part_num, :label => t('Part#') %>
+	  <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3} %>
+	  <%= f.input :unit, :label => t('Unit'), :collection => @qty_unit, :include_blank => true %>
+	  <%= f.input :category_id, :label => t('Part Category'), :collection => Commonx::MiscDefinition.where(:for_which => 'base_part_category'), :include_blank => true %>
+	  <%= f.input :preferred_supplier, :label => t('Preferred Supplier'), :input_html => {:rows => 2} %>
+	  <%= f.input :preferred_mfr, :label => t('Preferred Mfr') , :input_html => {:rows => 2} %>
+	  
+	  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+	  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
+<% end %>
+  
+<% end%>
+

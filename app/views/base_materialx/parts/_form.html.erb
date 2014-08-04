@@ -1,0 +1,24 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+  <% else %>
+  <h4><%=t('Update Base Part') %></h4>
+<%= simple_form_for @part do |f| %> 
+
+  <%= f.input :name, :label => t('Part Name'), :readonly => readonly?(@part, 'name') %>  
+  <%= f.input :part_num, :label => t('Part#'), :readonly => readonly?(@part, 'part_num') %>
+  <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3}, :readonly => readonly?(@part, 'spec') %>
+  <%= f.input :unit, :label => t('Qty Unit'), :collection => @qty_unit, :readonly => readonly?(@part, 'unit') %>
+  <%= f.input :category_id, :label => t('Part Category'), :collection => Commonx::MiscDefinition.where(:for_which => 'base_part_category') unless readonly?(@part, 'category_id') %>
+  <%= f.input :category_name, :label => t('Part Category'),  :readonly => true, :input_html => {:value => @part.category.name} if @part.category_id.present? && readonly?(@part, 'category_id') %>
+  <%= f.input :preferred_supplier, :label => t('Preferred Supplier'), :input_html => {:rows => 2}, :readonly => readonly?(@part, 'preferred_supplier') %>
+  <%= f.input :preferred_mfr, :label => t('Preferred Mfr'), :input_html => {:rows => 2}, :readonly => readonly?(@part, 'preferred_mfr') %>
+  <%= f.input :active, :label => t("Active"), :as => :boolean unless readonly?(@part, 'active') %>
+  <%= f.input :active_noupdate, :label => t("Active"), :readonly => true, :input_html => {:value => @part.active ? t('Yes') : t('No') } if readonly?(@part, 'active') %>
+  <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @part.last_updated_by.name}, :readonly => true if @part.last_updated_by_id.present? %>
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
+<% end %>  
+
+<% end %>

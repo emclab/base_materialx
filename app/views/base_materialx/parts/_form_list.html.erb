@@ -1,0 +1,54 @@
+ <% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+  <% else %>
+  <h4><%= @title %></h>
+<div class="pagination"><%= will_paginate models %></div>
+    <table class="table table-striped">
+		<tr>
+			<th>#</th>
+			<th><%= t('Create Date') %></th>
+			<th><%= t('Part Name') %></th>
+			<th><%= t('Part#') %></th>
+			<th><%= t('Spec') %></th>
+			<th><%= t('Unit') %></th>
+			<th><%= t('Description') %></th>
+			<th><%= t('Active') %></th>
+			<th><%= t('Last Updated By') %></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		<% models.each do |r| %>
+		  <tr>
+		  	<% unless has_action_right?('show', params[:controller], r) %>
+		  	  <td><%= prt(r, :id) %></td>
+		  	<% else %>
+		  	  <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{part_path(r)}" %></td>
+		  	<% end %>
+		  	<td><%= r.created_at.strftime("%Y/%m/%d") %></td>
+			<td><%= prt(r, :name) %></td>
+			<td><%= prt(r, :part_num) %></td>
+			<td><%= prt(r, :spec) %></td>
+			<td><%= prt(r, :unit) %></td>
+			<td><%= prt(r, :desp) %></td>
+			<td><%= r.active ? t('Yes') : t('No') %></td>
+			<td><%= prt(r, 'last_updated_by.name') if r.last_updated_by_id.present? %></td> 
+			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_part_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+		  </tr>
+		<% end %>
+	</table>
+	
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<%= link_to t('New Base Part'), SUBURI + "/authentify/view_handler?index=1&url=#{new_part_path}", :class => BUTTONS_CLS['action']  if has_action_right?('create', params[:controller]) %>
+	    </th>
+	  </tr>
+	</table>
+	
+	<% end %>
+	
