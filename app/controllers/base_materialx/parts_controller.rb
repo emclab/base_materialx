@@ -63,6 +63,11 @@ module BaseMaterialx
       @erb_code = find_config_const('part_show_view', 'base_materialx')
     end
     
+    def autocomplete
+      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
+      render json: @parts.map(&:name)    
+    end  
+    
     protected
     def load_parent_record
       @category_id = params[:category_id] if params[:category_id].present?
