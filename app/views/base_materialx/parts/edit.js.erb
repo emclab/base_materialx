@@ -1,0 +1,19 @@
+<% if @view_in_config && @js_erb_code %>
+  <%= render inline: ERB.new(@js_erb_code).result(binding) %>
+  
+<% else %>
+<% if params[:part][:field_changed] == 'category_id' && params[:part][:category_id].present?  %>
+  $('#part_sub_category_id').empty();
+  $('#part_sub_category_id').append('<option value=""></option>');
+  <% BaseMaterialx.category_class.find_by_id(params[:part][:category_id].to_i).sub_definitions.each do |r| %>
+    $('#part_sub_category_id').append('<option value="<%=r.id%>"><%= "#{r.name}" %></option>');
+  <% end %>
+  $('#part_field_changed').val('');
+<% elsif params[:part][:field_changed] == 'category_id' && params[:part][:category_id].blank? %>
+  $('#part_sub_category_id').empty();
+  $('#part_field_changed').val('');
+<% end %>
+
+
+
+<% end %>

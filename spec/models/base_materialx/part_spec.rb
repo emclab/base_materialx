@@ -22,6 +22,26 @@ module BaseMaterialx
       c.should_not be_valid
     end
     
+    it "should reject 0 category_id" do
+      c = FactoryGirl.build(:base_materialx_part, :category_id => 0)
+      c.should_not be_valid
+    end
+    
+    it "should reject nil category_id" do
+      c = FactoryGirl.build(:base_materialx_part, :category_id => nil)
+      c.should_not be_valid
+    end
+    
+    it "should reject 0 sub_category_id" do
+      c = FactoryGirl.build(:base_materialx_part, :sub_category_id => 0)
+      c.should_not be_valid
+    end
+    
+    it "should take nil sub_category_id" do
+      c = FactoryGirl.build(:base_materialx_part, :sub_category_id => nil)
+      c.should be_valid
+    end
+    
     it "should reject dup name for spec" do
       c = FactoryGirl.create(:base_materialx_part, :name => "nil", :spec => 'new new spec')
       c1 = FactoryGirl.build(:base_materialx_part, :name => "Nil")
