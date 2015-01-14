@@ -12,8 +12,9 @@ module BaseMaterialx
     belongs_to :sub_category, :class_name => BaseMaterialx.sub_category_class.to_s
     belongs_to :last_updated_by, :class_name => 'Authentify::User' 
     
-    attr_accessor :start_date_s, :end_date_s, :name_keyword_s, :spec_keyword_s, :category_keyword_s, :category_id_s, :sub_category_id_s, :active_s
-    attr_accessible :start_date_s, :end_date_s, :name_keyword_s, :spec_keyword_s, :category_keyword_s, :category_id_s, :sub_category_id_s, :active_s,     
+    attr_accessor :start_date_s, :end_date_s, :name_s, :spec_s, :part_num_s, :category_id_s, :sub_category_id_s, :active_s, :desp_s, :preferred_mfr_s, 
+                  :preferred_supplier_s
+    attr_accessible :start_date_s, :end_date_s, :name_s, :spec_s, :part_num_s, :category_id_s, :sub_category_id_s, :active_s, :desp_s, :preferred_mfr_s, :preferred_supplier_s,    
                     :as => :role_search_stats
                     
     validates :name, :spec, :unit, :presence => true
