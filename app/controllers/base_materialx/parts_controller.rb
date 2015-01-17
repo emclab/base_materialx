@@ -69,7 +69,7 @@ module BaseMaterialx
     
     def autocomplete
       @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
-      render json: @parts.map(&:name)    
+      render json: @parts.map {|f| "#{f.name} - #{f.spec}"}    #return string of 2 fields    
     end  
     
     protected
