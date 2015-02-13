@@ -42,10 +42,16 @@ module BaseMaterialx
       c.should be_valid
     end
     
-    it "should reject dup name for spec" do
+    it "should reject dup name for the same spec" do
       c = FactoryGirl.create(:base_materialx_part, :name => "nil", :spec => 'new new spec')
-      c1 = FactoryGirl.build(:base_materialx_part, :name => "Nil")
+      c1 = FactoryGirl.build(:base_materialx_part, :name => "Nil", :spec => 'new new spec')
       c1.should_not be_valid
+    end
+    
+    it "should allow dup name for different spec" do
+      c = FactoryGirl.create(:base_materialx_part, :name => "nil", :spec => 'new new spec')
+      c1 = FactoryGirl.build(:base_materialx_part, :name => "Nil", :spec => 'spec')
+      c1.should be_valid
     end
     
   end
