@@ -2,8 +2,8 @@ require_dependency "base_materialx/application_controller"
 
 module BaseMaterialx
   class PartsController < ApplicationController
-    before_filter :require_employee
-    before_filter :load_parent_record
+    before_action :require_employee
+    before_action :load_parent_record
         
     def index
       @title = t('Base Parts')
@@ -77,5 +77,6 @@ module BaseMaterialx
       @category_id = params[:category_id] if params[:category_id].present?
       @sub_category_id = params[:sub_category_id] if params[:sub_category_id].present?
     end
+    
   end
 end

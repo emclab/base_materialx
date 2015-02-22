@@ -1,10 +1,11 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module BaseMaterialx
-  describe PartsController do
+  RSpec.describe PartsController, type: :controller do
+    routes {BaseMaterialx::Engine.routes}
     before(:each) do
-      controller.should_receive(:require_signin)
-      controller.should_receive(:require_employee)
+      expect(controller).to receive(:require_signin)
+      expect(controller).to receive(:require_employee)
            
     end
     before(:each) do
@@ -30,10 +31,10 @@ module BaseMaterialx
         :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        task = FactoryGirl.create(:base_materialx_part)
-        task1 = FactoryGirl.create(:base_materialx_part, :name => 'a new task')
-        get 'index', {:use_route => :base_materialx}
-        assigns[:parts].should =~ [task, task1]
+        task = FactoryGirl.create(:base_materialx_part, :active => true)
+        task1 = FactoryGirl.create(:base_materialx_part, :name => 'a new task', active: true)
+        get 'index'
+        expect(assigns(:parts)).to match_array([task1, task])
       end
       
       it "should only return the part for a category_id" do
@@ -43,8 +44,8 @@ module BaseMaterialx
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id)
         task1 = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id + 1, :name => 'a new task')
-        get 'index', {:use_route => :base_materialx, :category_id => @cate.id}
-        assigns[:parts].should =~ [task]
+        get 'index', {:category_id => @cate.id}
+        expect(assigns(:parts)).to  match_array([task])
       end
       
       it "should only return the part for the sub_category_id" do
@@ -54,8 +55,8 @@ module BaseMaterialx
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         task = FactoryGirl.create(:base_materialx_part, :sub_category_id => @cate.id + 1)
         task1 = FactoryGirl.create(:base_materialx_part, :sub_category_id => @cate.id, :name => 'a new task')
-        get 'index', {:use_route => :base_materialx, :sub_category_id => @cate.id}
-        assigns[:parts].should =~ [task1]
+        get 'index', {:sub_category_id => @cate.id}
+        expect(assigns(:parts)).to match_array([task1])
       end
             
     end
@@ -66,8 +67,8 @@ module BaseMaterialx
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        get 'new', {:use_route => :base_materialx,  :category_id => @cate.id}
-        response.should be_success
+        get 'new', { :category_id => @cate.id}
+        expect(response).to be_success
       end
       
     end
@@ -79,8 +80,8 @@ module BaseMaterialx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         task = FactoryGirl.attributes_for(:base_materialx_part, :category_id => @cate.id )  
-        get 'create', {:use_route => :base_materialx, :part => task, :category_id => @cate.id}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        get 'create', {:part => task, :category_id => @cate.id}
+        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       end
       
       it "should render 'new' if data error" do        
@@ -89,8 +90,8 @@ module BaseMaterialx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         task = FactoryGirl.attributes_for(:base_materialx_part, :category_id => @cate.id, :name => nil)
-        get 'create', {:use_route => :base_materialx, :part => task, :category_id => @cate.id}
-        response.should render_template('new')
+        get 'create', {:part => task, :category_id => @cate.id}
+        expect(response).to render_template('new')
       end
     end
   
@@ -101,8 +102,8 @@ module BaseMaterialx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id)
-        get 'edit', {:use_route => :base_materialx, :id => task.id}
-        response.should be_success
+        get 'edit', {:id => task.id}
+        expect(response).to be_success
       end
       
     end
@@ -114,8 +115,8 @@ module BaseMaterialx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id)
-        get 'update', {:use_route => :base_materialx, :id => task.id, :part => {:name => 'new name'}}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        get 'update', {:id => task.id, :part => {:name => 'new name'}}
+        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       end
       
       it "should render edit with data error" do
@@ -124,8 +125,8 @@ module BaseMaterialx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         task = FactoryGirl.create(:base_materialx_part)
-        get 'update', {:use_route => :base_materialx, :id => task.id, :part => {:name => ''}}
-        response.should render_template('edit')
+        get 'update', {:id => task.id, :part => {:name => ''}}
+        expect(response).to render_template('edit')
       end
     end
   
@@ -136,8 +137,8 @@ module BaseMaterialx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id, :last_updated_by_id => @u.id)
-        get 'show', {:use_route => :base_materialx, :id => task.id}
-        response.should be_success
+        get 'show', {:id => task.id}
+        expect(response).to be_success
       end
     end
   end

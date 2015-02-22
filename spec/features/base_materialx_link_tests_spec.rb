@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe "LinkTests" do
+RSpec.describe "LinkTests", type: :request do
   describe "GET /base_materialx_link_tests" do
     mini_btn = 'btn btn-mini '
     ActionView::CompiledTemplates::BUTTONS_CLS =
@@ -52,7 +52,7 @@ describe "LinkTests" do
              
       @cate = FactoryGirl.create(:commonx_misc_definition, 'for_which' => 'base_part_category')
       
-      visit '/'
+      visit authentify.new_session_path
       #save_and_open_page
       fill_in "login", :with => @u.login
       fill_in "password", :with => @u.password
@@ -61,49 +61,49 @@ describe "LinkTests" do
     it "works! (now write some real specs)" do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       task = FactoryGirl.create(:base_materialx_part, active: true, :category_id => @cate.id, unit: 'piece', :last_updated_by_id => @u.id)
-      visit parts_path
+      visit base_materialx.parts_path
       #save_and_open_page
-      page.should have_content('Base Parts')
+      expect(page).to have_content('Base Parts')
       click_link 'Edit'
-      page.should have_content('Update Base Part')
+      expect(page).to have_content('Update Base Part')
       #save_and_open_page
       fill_in 'part_name', :with => 'a test Base Part'
       click_button 'Save'
-      visit parts_path
-      page.should have_content('a test Base Part')
+      visit base_materialx.parts_path
+      expect(page).to have_content('a test Base Part')
       #with wrong data
-      visit parts_path
-      page.should have_content('Base Parts')
+      visit base_materialx.parts_path
+      expect(page).to have_content('Base Parts')
       click_link 'Edit'
       fill_in 'part_name', :with => ''
       fill_in 'part_spec', :with => 'this will never show'
       click_button 'Save'
       save_and_open_page
-      visit parts_path
-      page.should_not have_content('this will never show')
+      visit base_materialx.parts_path
+      expect(page).not_to have_content('this will never show')
             
-      visit parts_path
+      visit base_materialx.parts_path
       click_link task.id.to_s
       #save_and_open_page
-      page.should have_content('Base Part Info')
+      expect(page).to have_content('Base Part Info')
       click_link 'New Log'
       #save_and_open_page
-      page.should have_content('Log')
+      expect(page).to have_content('Log')
       
-      visit parts_path
+      visit base_materialx.parts_path
       #save_and_open_page
       click_link 'New Base Part'
       save_and_open_page
-      page.should have_content('New Base Part')
+      expect(page).to have_content('New Base Part')
       fill_in 'part_name', :with => 'a test Base Part new'
       fill_in 'part_spec', :with => 'a test spec'
       select('piece', :from => 'part_unit')
       select('MyString', :from => 'part_category_id')
       click_button 'Save'
-      visit parts_path
-      page.should have_content('a test Base Part new')
+      visit base_materialx.parts_path
+      expect(page).to have_content('a test Base Part new')
       #with wrong data
-      visit parts_path
+      visit base_materialx.parts_path
       #save_and_open_page
       click_link 'New Base Part'
       fill_in 'part_name', :with => ''
@@ -112,8 +112,8 @@ describe "LinkTests" do
       select('MyString', :from => 'part_category_id')
       click_button 'Save'
       #save_and_open_page
-      visit parts_path
-      page.should_not have_content('a test spec will never show up')
+      visit base_materialx.parts_path
+      expect(page).not_to have_content('a test spec will never show up')
            
     end
   end
