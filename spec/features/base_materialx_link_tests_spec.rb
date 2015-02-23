@@ -37,10 +37,6 @@ RSpec.describe "LinkTests", type: :request do
         
       user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
-      user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
-        :sql_code => "")
-      user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
-        :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
