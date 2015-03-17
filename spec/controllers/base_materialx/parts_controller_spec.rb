@@ -30,7 +30,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.create(:base_materialx_part, :active => true)
         task1 = FactoryGirl.create(:base_materialx_part, :name => 'a new task', active: true)
         get 'index'
@@ -41,7 +41,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id)
         task1 = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id + 1, :name => 'a new task')
         get 'index', {:category_id => @cate.id}
@@ -52,7 +52,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.create(:base_materialx_part, :sub_category_id => @cate.id + 1)
         task1 = FactoryGirl.create(:base_materialx_part, :sub_category_id => @cate.id, :name => 'a new task')
         get 'index', {:sub_category_id => @cate.id}
@@ -66,7 +66,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         get 'new', { :category_id => @cate.id}
         expect(response).to be_success
       end
@@ -78,7 +78,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.attributes_for(:base_materialx_part, :category_id => @cate.id )  
         get 'create', {:part => task, :category_id => @cate.id}
         expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
@@ -88,7 +88,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.attributes_for(:base_materialx_part, :category_id => @cate.id, :name => nil)
         get 'create', {:part => task, :category_id => @cate.id}
         expect(response).to render_template('new')
@@ -100,7 +100,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id)
         get 'edit', {:id => task.id}
         expect(response).to be_success
@@ -113,7 +113,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id)
         get 'update', {:id => task.id, :part => {:name => 'new name'}}
         expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
@@ -123,7 +123,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.create(:base_materialx_part)
         get 'update', {:id => task.id, :part => {:name => ''}}
         expect(response).to render_template('edit')
@@ -135,7 +135,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'show', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "record.last_updated_by_id == session[:user_id]")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id, :last_updated_by_id => @u.id)
         get 'show', {:id => task.id}
         expect(response).to be_success
