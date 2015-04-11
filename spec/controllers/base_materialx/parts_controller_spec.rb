@@ -21,6 +21,7 @@ module BaseMaterialx
       
       @cate = FactoryGirl.create(:commonx_misc_definition, 'for_which' => 'base_part_category')
       
+      session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids
     end
     
     render_views
