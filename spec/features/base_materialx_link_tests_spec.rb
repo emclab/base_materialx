@@ -19,7 +19,11 @@ RSpec.describe "LinkTests", type: :request do
          'inverse'      => 'btn btn-inverse',
          'mini-inverse' => mini_btn + 'btn btn-inverse',
          'link'         => 'btn btn-link',
-         'mini-link'    => mini_btn +  'btn btn-link'
+         'mini-link'    => mini_btn +  'btn btn-link',
+         'right-span#'         => '2', 
+                 'left-span#'         => '6', 
+                 'offset#'         => '2',
+                 'form-span#'         => '4'
         }
     before(:each) do
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
@@ -45,7 +49,8 @@ RSpec.describe "LinkTests", type: :request do
       :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'create_base_part', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
-             
+      
+      piece = FactoryGirl.create(:commonx_misc_definition, :name => 'piece', :for_which => 'piece_unit')       
       @cate = FactoryGirl.create(:commonx_misc_definition, 'for_which' => 'base_part_category')
       
       visit authentify.new_session_path
@@ -66,6 +71,7 @@ RSpec.describe "LinkTests", type: :request do
       fill_in 'part_name', :with => 'a test Base Part'
       click_button 'Save'
       visit base_materialx.parts_path
+      #save_and_open_page
       expect(page).to have_content('a test Base Part')
       #with wrong data
       visit base_materialx.parts_path
@@ -94,7 +100,7 @@ RSpec.describe "LinkTests", type: :request do
       fill_in 'part_name', :with => 'a test Base Part new'
       fill_in 'part_spec', :with => 'a test spec'
       select('piece', :from => 'part_unit')
-      select('MyString', :from => 'part_category_id')
+      #select('MyString', :from => 'part_category_id')
       click_button 'Save'
       visit base_materialx.parts_path
       expect(page).to have_content('a test Base Part new')
@@ -105,7 +111,7 @@ RSpec.describe "LinkTests", type: :request do
       fill_in 'part_name', :with => ''
       fill_in 'part_spec', :with => 'a test spec will never show up'
       select('piece', :from => 'part_unit')
-      select('MyString', :from => 'part_category_id')
+      #select('MyString', :from => 'part_category_id')
       click_button 'Save'
       #save_and_open_page
       visit base_materialx.parts_path

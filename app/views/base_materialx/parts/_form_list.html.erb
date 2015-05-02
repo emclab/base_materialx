@@ -2,9 +2,15 @@
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
   <% else %>
-  <h4><%= @title %></h>
-<div class="pagination"><%= will_paginate models %></div>
-    <table class="table table-striped">
+ <div class="pagination"><%= will_paginate models %></div>
+<div class="container-fluid">
+        <div class="page-header clearfix">
+          <div class="pull-left">
+            <h2><%=@title%></h2>
+          </div>
+        </div>
+      <table class="table table-hover">
+              <thead>
 		<tr>
 			<th>#</th>
 			<th><%= t('Create Date') %></th>
@@ -19,6 +25,8 @@
 			<th></th>
 			<th></th>
 		</tr>
+             </thead>
+             <tbody>
 		<% models.each do |r| %>
 		  <tr>
 		  	<% unless has_action_right?('show', params[:controller], r) %>
@@ -31,27 +39,23 @@
 			<td><%= prt(r, :part_num) %></td>
 			<td><%= prt(r, :spec) %></td>
 			<td><%= prt(r, :unit) %></td>
-			<td><%= prt(r, :desp) %></td>
+			<td><%= simple_format(h prt(r, :desp)) %></td>
 			<td><%= r.active ? t('Yes') : t('No') %></td>
 			<td><%= prt(r, 'last_updated_by.name') if r.last_updated_by_id.present? %></td> 
 			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_part_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
 		  </tr>
 		<% end %>
+                 </tbody>
 	</table>
 	
-	<table class="table table-striped">
-	  <tr>
-	    <th>
-	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<div class="btn-toolbar">
 	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
-	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	    	<%= link_to t('New Base Part'), SUBURI + "/authentify/view_handler?index=1&url=#{new_part_path}", :class => BUTTONS_CLS['action']  if has_action_right?('create', params[:controller]) %>
-	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    	    <%= link_to t('Search'), SUBURI + "/authentify/view_handler?index=1&url=#{search_parts_path}", :class => BUTTONS_CLS['action'] if has_action_right?('search', params[:controller]) %>
+            <%= link_to t('Search'), SUBURI + "/authentify/view_handler?index=1&url=#{search_parts_path}", :class => BUTTONS_CLS['action'] if has_action_right?('search', params[:controller]) %>
   		  
-	    </th>
-	  </tr>
-	</table>
+	 </div>
+
+</div>
 	
 	<% end %>
 	

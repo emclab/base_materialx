@@ -3,65 +3,116 @@
   
   <% else %>
 <div id="main_body">
-<h4><%=t('Base Part Info') %></h4>
-
-<p>
-  <b><%= t('Create Date') %></b>
-  <%= @part.created_at.strftime('%Y/%m/%d') %>
-</p>
-<p>
-  <b><%= t('Name') %></b>
-  <%= @part.name %>
-</p>
-<p>
-  <b><%= t('Part#') %></b>
-  <%= @part.part_num %>
-</p>
-<p>
-  <b><%= t('Spec') %></b>
-  <%= @part.spec %>
-</p>
-<p>
-  <b><%= t('Unit') %></b>
-  <%= @part.unit %>
-</p>
-<p>
-  <b><%= t('Category') %></b>
-  <%= @part.category.name if @part.category_id.present? %>
-</p>
-<p>
-  <b><%= t('Preferred Mfr') %></b>
-  <%= @part.preferred_mfr %>
-</p>
-<p>
-  <b><%= t('Preferred Supplier') %></b>
-  <%= @part.preferred_supplier %>
-</p>
-<p>
-  <b><%= t('Active') %></b>
-  <%= @part.active ? t('Yes') : t('No') %>
-</p>
-<p>
-  <b><%= t('Last Updated By') %></b>
-  <%= @part.last_updated_by.name %>
-</p>
-<p>
-  <b>LOG：</b>
-  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @part.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
-    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
-  <% end %>
-</p>
-
-	<table class="table table-striped">
-	  <tr>
-	    <th>
- 		  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
-  		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	  	  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @part.id, :resource_name => params[:controller], :subaction => 'base_part', :format => :js), :remote => true, 
+<div class="container">
+  <div class="page-header clearfix">
+      <div class="pull-left">
+        <h2><%=@title%></h2>
+      </div>
+    </div>
+ <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+         <b><%= t('Create Date') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+        <%= @part.created_at.strftime('%Y/%m/%d') %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+        <b><%= t('Name') %></b>
+     </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+       <%= @part.name %>
+    </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group"> 
+        <b><%= t('Part#') %></b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+         <%= @part.part_num %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+     <b><%= t('Spec') %></b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+     <%= @part.spec %>
+   </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+       <b><%= t('Unit') %></b>
+   </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+      <%= @part.unit %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+      <b><%= t('Category') %></b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+     <%= @part.category.name if @part.category_id.present? %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+        <b><%= t('Sub Category') %></b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+        <%#= @part.sub_category.name if @part.sub_category_id.present? %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+      <b><%= t('Preferred Mfr') %></b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+      <%= @part.preferred_mfr %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+       <b><%= t('Preferred Supplier') %></b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+      <%= @part.preferred_supplier %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+        <b><%= t('Active') %></b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+      <%= @part.active ? t('Yes') : t('No') %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+      <b><%= t('Last Updated By') %></b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+      <%= @part.last_updated_by.name %>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
+      <b>LOG：</b>
+  </div>
+  <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+      <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @part.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+            <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
+      <% end %>
+   </div>
+ </div>
+ <div class="btn-toolbar">
+ 	  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+  	  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @part.id, :resource_name => params[:controller], :subaction => 'base_part', :format => :js), :remote => true, 
                           :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_base_part', 'commonx/logs') %>
-        </th>
-	  </tr>
-	</table>    	
+  </div>	
+</div>
 </div>
 
 <% end %>

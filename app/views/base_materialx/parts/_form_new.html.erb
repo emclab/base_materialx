@@ -2,19 +2,43 @@
   <%= render inline: @erb_code %>
   
   <% else %>
-  <h4><%=t('New Base Part') %></h4>
-<%= simple_form_for @part do |f| %>  
-      <%= f.input :name, :label => t('Part Name') %>  
-	  <%= f.input :part_num, :label => t('Part#') %>
-	  <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3} %>
-	  <%= f.input :unit, :label => t('Unit'), :collection => @qty_unit, :include_blank => true %>
-	  <%= f.input :category_id, :label => t('Part Category'), :collection => Commonx::MiscDefinition.where(:for_which => 'base_part_category'), :include_blank => true %>
-	  <%= f.input :preferred_supplier, :label => t('Preferred Supplier'), :input_html => {:rows => 2} %>
-	  <%= f.input :preferred_mfr, :label => t('Preferred Mfr') , :input_html => {:rows => 2} %>
-	  
-	  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
-	  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
+  <div class="container">
+  <div class="page-header clearfix">
+    <div class="pull-left">
+        <h2><%=@title%></h2>
+    </div>
+  </div>
+
+<%= simple_form_for @part, html: { class: 'form-horizontal col-sm-' + BUTTONS_CLS['form-span#'] },
+    wrapper: :horizontal_form,
+    wrapper_mappings: {
+    check_boxes: :horizontal_radio_and_checkboxes,
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input,
+    boolean: :horizontal_boolean
+  } do |f| %>
+  
+      <div class="form-inputs"> 
+           <%= f.input :name, :label => t('Part Name') %>  
+           <%= f.input :part_num, :label => t('Part#') %>
+           <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3} %>
+           <%= f.input :unit, :label => t('Unit'), :collection => @qty_unit, :include_blank => true %>
+           <%= f.input :category_id, :label => t('Part Category'), :collection => TwoTierDefinitionx::Definition.where('active = ? AND for_which = ?', true, 'material_category').order('ranking_index'), :include_blank => true %>
+           <%= f.input :sub_category_id, :label => t('Part Sub Category'), :collection => TwoTierDefinitionx::SubDefinition.where(active: true).order('ranking_index'), :include_blank => true %>
+           <%= f.input :preferred_supplier, :label => t('Preferred Supplier'), :input_html => {:rows => 2} %>
+           <%= f.input :preferred_mfr, :label => t('Preferred Mfr') , :input_html => {:rows => 2} %>
+           <%= f.input :field_changed, :as => :hidden %> 
+
+      <div class="form-actions col-sm-offset-<%=BUTTONS_CLS['offset#']%>" >
+          <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+          <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>    
+      </div> 
+
+  </div>
+ 
 <% end %>
+
+</div>
   
 <% end%>
 

@@ -27,9 +27,9 @@ module BaseMaterialx
       expect(c).not_to be_valid
     end
     
-    it "should reject nil category_id" do
+    it "should  take nil category_id" do
       c = FactoryGirl.build(:base_materialx_part, :category_id => nil)
-      expect(c).not_to be_valid
+      expect(c).to be_valid
     end
     
     it "should reject 0 sub_category_id" do

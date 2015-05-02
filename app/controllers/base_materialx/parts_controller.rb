@@ -23,7 +23,7 @@ module BaseMaterialx
     end
   
     def create
-      @part = BaseMaterialx::Part.new(params[:part], :as => :role_new)
+      @part = BaseMaterialx::Part.new(new_params)
       @part.last_updated_by_id = session[:user_id]
       if @part.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
@@ -50,7 +50,7 @@ module BaseMaterialx
     def update
       @part = BaseMaterialx::Part.find_by_id(params[:id])
       @part.last_updated_by_id = session[:user_id]
-      if @part.update_attributes(params[:part], :as => :role_update)
+      if @part.update_attributes(edit_params)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
@@ -78,5 +78,16 @@ module BaseMaterialx
       @sub_category_id = params[:sub_category_id] if params[:sub_category_id].present?
     end
     
+    private
+    
+    def new_params
+      params.require(:part).permit(:active, :category_id, :desp, :unit, :last_updated_by_id, :name, :preferred_mfr, :preferred_supplier, :spec, :sub_category_id, :wf_state,
+                    :part_num)
+    end
+    
+    def edit_params
+      params.require(:part).permit(:active, :category_id, :desp, :unit, :last_updated_by_id, :name, :preferred_mfr, :preferred_supplier, :spec, :sub_category_id, :wf_state,
+                    :part_num)
+    end
   end
 end
