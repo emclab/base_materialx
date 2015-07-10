@@ -70,8 +70,18 @@ module BaseMaterialx
     def autocomplete
       @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
       render json: @parts.map {|f| "#{f.name} -    #{f.spec}"}    #return string of 2 fields. format []-[][][][]    
-    end  
+    end
     
+    def autocomplete_part_num
+      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
+      render json: @parts.map {|f| "#{f.name} -    #{f.part_num}"}    #return string of 2 fields. format []-[][][][]    
+    end
+    
+    def autocomplete_name
+      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
+      render json: @parts.map {|f| "#{f.name}"}    #return name only    
+    end
+      
     protected
     def load_parent_record
       @category_id = params[:category_id] if params[:category_id].present?

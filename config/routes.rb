@@ -4,6 +4,8 @@ BaseMaterialx::Engine.routes.draw do
       get :search
       get :search_results
       get :autocomplete
+      get :autocomplete_part_num
+      get :autocomplete_name
     end
   end
   
