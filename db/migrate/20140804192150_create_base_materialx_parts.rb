@@ -13,8 +13,8 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
       t.integer :last_updated_by_id
       t.string :wf_state
       t.boolean :active, :default => true
-
       t.timestamps
+      t.string :aux_resource
     end
     
     add_index :base_materialx_parts, :name
@@ -24,5 +24,6 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
     add_index :base_materialx_parts, :sub_category_id
     add_index :base_materialx_parts, :wf_state
     add_index :base_materialx_parts, :active
+    add_index :base_materialx_parts, :aux_resource
   end
 end

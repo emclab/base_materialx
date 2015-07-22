@@ -77,7 +77,7 @@ module BaseMaterialx
         session[:user_id] = @u.id
         task = FactoryGirl.attributes_for(:base_materialx_part, :category_id => @cate.id )  
         get 'create', {:part => task, :category_id => @cate.id}
-        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       end
       
       it "should render 'new' if data error" do        
@@ -110,7 +110,7 @@ module BaseMaterialx
         session[:user_id] = @u.id
         task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id)
         get 'update', {:id => task.id, :part => {:name => 'new name'}}
-        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       end
       
       it "should render edit with data error" do
