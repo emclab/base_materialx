@@ -21,8 +21,8 @@ module BaseMaterialx
       @part = BaseMaterialx::Part.new()
       @part.send("build_#{@aux_resource.sub(/.+\//,'').singularize.to_s}") if @aux_resource
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
-      @erb_code = find_config_const('part_new_view', 'base_materialx') unless @aux_resource
-      @erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + 'new_view', 'base_materialx') if @aux_resource
+      @erb_code = find_config_const('part_new_view', 'base_materialx')
+      @aux_erb_code = find_config_const(@aux_model + '_new_view', @aux_engine) if @aux_resource  #cob_info_new_view, cob_orderx
       @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') if @aux_resource.blank?
       @js_erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + '_new_js_view', 'base_materialx') if @aux_resource.present?
     end
@@ -43,8 +43,8 @@ module BaseMaterialx
         redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       else
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
-        @erb_code = find_config_const('part_new_view', 'base_materialx') if params[:part][:aux_resource].blank?
-        @erb_code = find_config_const('part_'+ aux_model + '_new_view', 'base_materialx') if params[:part][:aux_resource].present?
+        @erb_code = find_config_const('part_new_view', 'base_materialx') 
+        @aux_erb_code = find_config_const(aux_model + '_new_view', @aux_engine) if params[:part][:aux_resource].present?
         @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') if params[:part][:aux_resource].blank?
         @js_erb_code = find_config_const('part_' + aux_model + '_new_js_view', 'base_materialx') if params[:part][:aux_resource].present?
         flash[:notice] = t('Data Error. Not Saved!')
@@ -56,10 +56,9 @@ module BaseMaterialx
       @title = t('Update Base Part')
       @part = BaseMaterialx::Part.find_by_id(params[:id])
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
-      @erb_code = find_config_const('part_edit_view', 'base_materialx') unless @aux_resource
-      @erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + '_edit_view', 'base_materialx') if @aux_resource
-      @js_erb_code = find_config_const('part_edit_js_view', 'base_materialx') unless @aux_resource
-      @js_erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + '_edit_js_view', 'base_materialx') if @aux_resource     
+      @erb_code = find_config_const('part_edit_view', 'base_materialx')
+      @aux_erb_code = find_config_const(@aux_model + '_edit_view', @aux_engine) if @aux_resource
+      @js_erb_code = find_config_const('part_edit_js_view', 'base_materialx') 
     end
   
     def update
@@ -78,10 +77,9 @@ module BaseMaterialx
         redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       else
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
-        @erb_code = find_config_const('part_edit_view', 'base_materialx') unless @aux_resource
-        @erb_code = find_config_const('part_' + aux_model + '_edit_view', 'base_materialx') if @aux_resource
-        @js_erb_code = find_config_const('part_edit_js_view', 'base_materialx') unless @aux_resource
-        @js_erb_code = find_config_const('part_' + aux_model + '_edit_js_view', 'base_materialx') if @aux_resource
+        @erb_code = find_config_const('part_edit_view', 'base_materialx') 
+        @aux_erb_code = find_config_const(@aux_model + '_edit_view', @aux_engine) if @aux_resource
+        @js_erb_code = find_config_const('part_edit_js_view', 'base_materialx') 
         flash[:notice] = t('Data Error. Not Updated!')
         render 'edit'
       end
@@ -90,8 +88,8 @@ module BaseMaterialx
     def show
       @title = t('Base Part Info')
       @part = BaseMaterialx::Part.find_by_id(params[:id])
-      @erb_code = find_config_const('part_show_view', 'base_materialx') if @aux_resource.blank?
-      @erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + '_show_view', 'base_materialx') if @aux_resource.present?
+      @erb_code = find_config_const('part_show_view', 'base_materialx') 
+      @aux_erb_code = find_config_const(@aux_model + '_show_view', @aux_engine) if @aux_resource
     end
     
     def autocomplete
@@ -115,6 +113,8 @@ module BaseMaterialx
       @sub_category_id = params[:sub_category_id] if params[:sub_category_id].present?
       @aux_resource = params[:aux_resource].strip if params[:aux_resource]  #cob_orderx/cob_orders
       @aux_resource = BaseMaterialx::Part.find(params[:id]).aux_resource if params[:id].present?   
+      @aux_engine = @aux_resource.sub(/\/.+/, '') if @aux_resource  
+      @aux_model = @aux_resource.sub(/.+\//,'').singularize.to_s if @aux_resource  #cob_info
     end
     
     private

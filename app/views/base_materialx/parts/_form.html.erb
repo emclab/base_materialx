@@ -31,6 +31,7 @@
   <%= f.input :active_noupdate, :label => t("Active"), :readonly => true, :input_html => {:value => @part.active ? t('Yes') : t('No') } if readonly?(@part, 'active') %>
   <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @part.last_updated_by.name}, :readonly => true if @part.last_updated_by_id.present? %>
   <%= f.input :field_changed, :as => :hidden %> 
+  <%= render inline: @aux_erb_code, locals: {f: f} if @aux_resource %>
  
   <div class="form-actions col-sm-offset-<%=BUTTONS_CLS['offset#']%>" > 
     <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>

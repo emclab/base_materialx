@@ -28,6 +28,8 @@
            <%= f.input :preferred_supplier, :label => t('Preferred Supplier'), :input_html => {:rows => 2} %>
            <%= f.input :preferred_mfr, :label => t('Preferred Mfr') , :input_html => {:rows => 2} %>
            <%= f.input :field_changed, :as => :hidden %> 
+           <%= f.input :aux_resource, :as => :hidden, :input_html => {:value => @aux_resource} if @aux_resource %>
+           <%= render inline: @aux_erb_code, locals: {f: f} if @aux_resource %>
 
       <div class="form-actions col-sm-offset-<%=BUTTONS_CLS['offset#']%>" >
           <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
