@@ -80,6 +80,15 @@ module BaseMaterialx
         expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       end
       
+      it "should render 'new' if stay input" do        
+        user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+        session[:user_id] = @u.id
+        task = FactoryGirl.attributes_for(:base_materialx_part, :category_id => @cate.id, :stay_input => 'true' )  
+        get 'create', {:part => task, :category_id => @cate.id}
+        expect(response).to render_template('new')
+      end
+      
       it "should render 'new' if data error" do        
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")

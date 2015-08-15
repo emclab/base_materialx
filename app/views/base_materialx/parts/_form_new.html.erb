@@ -19,6 +19,7 @@
   } do |f| %>
   
       <div class="form-inputs"> 
+      	   <%= f.input :stay_input, :label => I18n.t('Stay Input'), :as => :boolean %>
            <%= f.input :name, :label => t('Part Name') %>  
            <%= f.input :part_num, :label => t('Part#') %>
            <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3} %>

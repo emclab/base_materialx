@@ -40,9 +40,10 @@ module BaseMaterialx
         end
       end
       if @part.save
-        if params[:part][:stay_input].blank? || params[:part][:stay_input] = 'false'
+        unless params[:part][:stay_input] == 'true'
           redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
         else
+          flash[:notice] = t('Successfully Saved!')
           params[:part] = nil
           render 'new'
         end
