@@ -1,6 +1,6 @@
 module BaseMaterialx
   class Part < ActiveRecord::Base
-    attr_accessor :active_noupdate, :last_updated_by_name, :category_name, :sub_category_name, :field_changed
+    attr_accessor :active_noupdate, :last_updated_by_name, :category_name, :sub_category_name, :field_changed, :stay_input
 
     model_name = Authentify::AuthentifyUtility.find_config_const('aux_resource', 'base_materialx')  #cob_orderx/orders
     model_name.split(',').each do |a|

@@ -40,7 +40,12 @@ module BaseMaterialx
         end
       end
       if @part.save
-        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
+        if params[:part][:stay_input].blank? || params[:part][:stay_input] = 'false'
+          redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
+        else
+          params[:part] = nil
+          render 'new'
+        end
       else
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         @erb_code = find_config_const('part_new_view', 'base_materialx') 
