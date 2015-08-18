@@ -54,5 +54,11 @@ module BaseMaterialx
       expect(c1).to be_valid
     end
     
+    it "should not have same part_num for same spec " do
+      c = FactoryGirl.create(:base_materialx_part, :part_num => "nil", :spec => 'new new spec')
+      c1 = FactoryGirl.build(:base_materialx_part, :part_num => "Nil", :spec => 'new new spec')
+      expect(c1).not_to be_valid
+    end
+    
   end
 end

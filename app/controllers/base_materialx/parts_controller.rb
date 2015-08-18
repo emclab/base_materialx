@@ -43,8 +43,8 @@ module BaseMaterialx
         unless params[:part][:stay_input] == 'true'
           redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
         else
+          clean_page()
           flash[:notice] = t('Successfully Saved!')
-          params[:part] = nil
           render 'new'
         end
       else
@@ -133,6 +133,11 @@ module BaseMaterialx
     def edit_params
       params.require(:part).permit(:active, :category_id, :desp, :unit, :last_updated_by_id, :name, :preferred_mfr, :preferred_supplier, :spec, :sub_category_id, :wf_state,
                     :part_num)
+    end
+    
+    def clean_page
+      params[:part][:name] = nil
+      params[:part][:part_num] = nil
     end
   end
 end

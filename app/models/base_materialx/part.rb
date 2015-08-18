@@ -14,6 +14,7 @@ module BaseMaterialx
     validates :category_id, :numericality => {:only_integer => true, :greater_than => 0}, :if => 'category_id.present?'  
     validates :sub_category_id, :numericality => {:only_integer => true, :greater_than => 0}, :if => 'sub_category_id.present?'  
     validates :name, :uniqueness => {:scope => :spec, :case_sensitive => false, :message => I18n.t('Duplicate Name!')} 
+    validates :part_num, :uniqueness => {:scope => :spec, :case_sensitive => false, :message => I18n.t('Duplicate Name!')}, :if => 'part_num.present?'
     validate :dynamic_validate 
     
     def dynamic_validate

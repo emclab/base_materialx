@@ -32,7 +32,7 @@ module BaseMaterialx
         :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
         session[:user_id] = @u.id
         task = FactoryGirl.create(:base_materialx_part, :active => true)
-        task1 = FactoryGirl.create(:base_materialx_part, :name => 'a new task', active: true)
+        task1 = FactoryGirl.create(:base_materialx_part, :name => 'a new task', active: true, :part_num => nil)
         get 'index'
         expect(assigns(:parts)).to match_array([task1, task])
       end
@@ -41,7 +41,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
         session[:user_id] = @u.id
-        task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id)
+        task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id, :part_num => nil)
         task1 = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id + 1, :name => 'a new task')
         get 'index', {:category_id => @cate.id}
         expect(assigns(:parts)).to  match_array([task])
@@ -51,7 +51,7 @@ module BaseMaterialx
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
         session[:user_id] = @u.id
-        task = FactoryGirl.create(:base_materialx_part, :sub_category_id => @cate.id + 1)
+        task = FactoryGirl.create(:base_materialx_part, :sub_category_id => @cate.id + 1, :part_num => nil)
         task1 = FactoryGirl.create(:base_materialx_part, :sub_category_id => @cate.id, :name => 'a new task')
         get 'index', {:sub_category_id => @cate.id}
         expect(assigns(:parts)).to match_array([task1])
