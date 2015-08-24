@@ -118,7 +118,7 @@ module BaseMaterialx
       @category_id = params[:category_id] if params[:category_id].present?
       @sub_category_id = params[:sub_category_id] if params[:sub_category_id].present?
       @aux_resource = params[:aux_resource].strip if params[:aux_resource]  #cob_orderx/cob_orders
-      @aux_resource = BaseMaterialx::Part.find(params[:id]).aux_resource if params[:id].present?   
+      @aux_resource = BaseMaterialx::Part.find(params[:id]).aux_resource if params[:id].present? && BaseMaterialx::Part.find(params[:id]).respond_to?(:aux_resource)  
       @aux_engine = @aux_resource.sub(/\/.+/, '') if @aux_resource  
       @aux_model = @aux_resource.sub(/.+\//,'').singularize.to_s if @aux_resource  #cob_info
     end
