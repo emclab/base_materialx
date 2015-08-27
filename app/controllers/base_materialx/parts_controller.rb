@@ -1,3 +1,4 @@
+
 require_dependency "base_materialx/application_controller"
 
 module BaseMaterialx
@@ -104,7 +105,7 @@ module BaseMaterialx
     end
     
     def autocomplete_part_num
-      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
+      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("part_num like ?", "%#{params[:term]}%")
       render json: @parts.map {|f| "#{f.name} -    #{f.part_num}"}    #return string of 2 fields. format []-[][][][]    
     end
     
