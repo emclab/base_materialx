@@ -42,7 +42,7 @@ module BaseMaterialx
         end
       end
       if @part.save
-        unless params[:part][:stay_input] == 'true'
+        unless params[:part][:stay_input] == '1' || params[:part][:stay_input] == 'true'
           redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
         else
           clean_page()

@@ -1,3 +1,3 @@
 module BaseMaterialx
-  VERSION = "06"
+  VERSION = "07"
 end
