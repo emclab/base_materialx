@@ -86,7 +86,7 @@ module BaseMaterialx
         session[:user_id] = @u.id
         task = FactoryGirl.attributes_for(:base_materialx_part, :category_id => @cate.id, :stay_input => 'true' )  
         get 'create', {:part => task, :category_id => @cate.id}
-        expect(response).to render_template('new')
+        expect(response).to redirect_to new_part_url
       end
       
       it "should render 'new' if data error" do        

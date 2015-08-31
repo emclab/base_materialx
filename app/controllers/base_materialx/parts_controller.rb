@@ -45,9 +45,7 @@ module BaseMaterialx
         unless params[:part][:stay_input] == '1' || params[:part][:stay_input] == 'true'
           redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
         else
-          clean_page()
-          flash[:notice] = t('Successfully Saved!')
-          render 'new'
+          redirect_to new_part_url, notice: I18n.t('Successfully Saved!')
         end
       else
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
