@@ -13,8 +13,8 @@ module BaseMaterialx
       @parts = @parts.where(:sub_category_id => @sub_category_id) if @sub_category_id 
       @parts = @parts.where(aux_resource: @aux_resource) if @aux_resource     
       @parts = @parts.page(params[:page]).per_page(@max_pagination) 
-      @erb_code = find_config_const('part_index_view', 'base_materialx') #unless @aux_resource
-      #@erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + '_index_view', 'base_materialx') if @aux_resource
+      @erb_code = find_config_const('part_index_view', 'base_materialx') if @aux_resource.blank?
+      @erb_code = find_config_const('part_' + @aux_model + '_index_view', 'base_materialx') if @aux_resource
     end
   
     def new
@@ -25,8 +25,8 @@ module BaseMaterialx
       @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
       @erb_code = find_config_const('part_new_view', 'base_materialx')
       @aux_erb_code = find_config_const(@aux_model + '_new_view', @aux_engine) if @aux_resource  #cob_info_new_view, cob_orderx
-      @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') if @aux_resource.blank?
-      @js_erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + '_new_js_view', 'base_materialx') if @aux_resource.present?
+      @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') #if @aux_resource.blank?
+      #@js_erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + '_new_js_view', 'base_materialx') if @aux_resource.present?
     end
   
     def create
@@ -52,8 +52,8 @@ module BaseMaterialx
         @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
         @erb_code = find_config_const('part_new_view', 'base_materialx') 
         @aux_erb_code = find_config_const(aux_model + '_new_view', @aux_engine) if params[:part][:aux_resource].present?
-        @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') if params[:part][:aux_resource].blank?
-        @js_erb_code = find_config_const('part_' + aux_model + '_new_js_view', 'base_materialx') if params[:part][:aux_resource].present?
+        @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') #if params[:part][:aux_resource].blank?
+        #@js_erb_code = find_config_const('part_' + aux_model + '_new_js_view', 'base_materialx') if params[:part][:aux_resource].present?
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
       end
@@ -122,7 +122,7 @@ module BaseMaterialx
       @sub_category_id = params[:sub_category_id] if params[:sub_category_id].present?
       @aux_resource = params[:aux_resource].strip if params[:aux_resource]  #cob_orderx/cob_orders
       @aux_resource = BaseMaterialx::Part.find(params[:id]).aux_resource if params[:id].present? && BaseMaterialx::Part.find(params[:id]).respond_to?(:aux_resource)  
-      @aux_engine = @aux_resource.sub(/\/.+/, '') if @aux_resource  
+      @aux_engine = @aux_resource.sub(/\/.+/, '') if @aux_resource  #aux_resource='base_materialx/parts'
       @aux_model = @aux_resource.sub(/.+\//,'').singularize.to_s if @aux_resource  #cob_info
     end
     
