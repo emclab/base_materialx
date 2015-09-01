@@ -25,8 +25,7 @@ module BaseMaterialx
       @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
       @erb_code = find_config_const('part_new_view', 'base_materialx')
       @aux_erb_code = find_config_const(@aux_model + '_new_view', @aux_engine) if @aux_resource  #cob_info_new_view, cob_orderx
-      @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') #if @aux_resource.blank?
-      #@js_erb_code = find_config_const('part_' + @aux_resource.sub(/.+\//,'').singularize.to_s + '_new_js_view', 'base_materialx') if @aux_resource.present?
+      @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') 
     end
   
     def create

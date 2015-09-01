@@ -89,7 +89,9 @@
       <%= @part.active ? t('Yes') : t('No') %>
   </div>
   </div>
+  
   <%= render inline: ERB.new(@aux_erb_code).result(binding) if @aux_erb_code %>
+  
   <div class="row">
   <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">  
       <b><%= t('Last Updated By') %></b>
