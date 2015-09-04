@@ -23,7 +23,8 @@ module BaseMaterialx
       @part.send("build_#{@aux_resource.sub(/.+\//,'').singularize.to_s}") if @aux_resource
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
       @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
-      @erb_code = find_config_const('part_new_view', 'base_materialx')
+      @erb_code = find_config_const('part_new_view', 'base_materialx') unless @aux_resource
+      @erb_code = find_config_const('part_' + @aux_model + '_new_view', 'base_materialx') if @aux_resource
       @aux_erb_code = find_config_const(@aux_model + '_new_view', @aux_engine) if @aux_resource  #cob_info_new_view, cob_orderx
       @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') 
     end
@@ -49,7 +50,8 @@ module BaseMaterialx
       else
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
         @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
-        @erb_code = find_config_const('part_new_view', 'base_materialx') 
+        @erb_code = find_config_const('part_new_view', 'base_materialx') if params[:part][:aux_resource].blank? 
+        @erb_code = find_config_const('part_' + @aux_model + '_new_view', 'base_materialx') if params[:part][:aux_resource].present? 
         @aux_erb_code = find_config_const(aux_model + '_new_view', @aux_engine) if params[:part][:aux_resource].present?
         @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') #if params[:part][:aux_resource].blank?
         #@js_erb_code = find_config_const('part_' + aux_model + '_new_js_view', 'base_materialx') if params[:part][:aux_resource].present?
@@ -63,7 +65,8 @@ module BaseMaterialx
       @part = BaseMaterialx::Part.find_by_id(params[:id])
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
       @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
-      @erb_code = find_config_const('part_edit_view', 'base_materialx')
+      @erb_code = find_config_const('part_edit_view', 'base_materialx') unless @aux_resource
+      @erb_code = find_config_const('part_' + @aux_model + '_edit_view', 'base_materialx') if @aux_resource
       @aux_erb_code = find_config_const(@aux_model + '_edit_view', @aux_engine) if @aux_resource
       @js_erb_code = find_config_const('part_edit_js_view', 'base_materialx') 
     end
@@ -85,7 +88,8 @@ module BaseMaterialx
       else
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
         @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
-        @erb_code = find_config_const('part_edit_view', 'base_materialx') 
+        @erb_code = find_config_const('part_edit_view', 'base_materialx') unless @aux_resource
+        @erb_code = find_config_const('part_' + @aux_model + '_edit_view', 'base_materialx') if @aux_resource
         @aux_erb_code = find_config_const(@aux_model + '_edit_view', @aux_engine) if @aux_resource
         @js_erb_code = find_config_const('part_edit_js_view', 'base_materialx') 
         flash[:notice] = t('Data Error. Not Updated!')
@@ -96,7 +100,8 @@ module BaseMaterialx
     def show
       @title = t('Base Part Info')
       @part = BaseMaterialx::Part.find_by_id(params[:id])
-      @erb_code = find_config_const('part_show_view', 'base_materialx') 
+      @erb_code = find_config_const('part_show_view', 'base_materialx') unless @aux_resource  
+      @erb_code = find_config_const('part_' + @aux_model + '_show_view', 'base_materialx') if @aux_resource  
       @aux_erb_code = find_config_const(@aux_model + '_show_view', @aux_engine) if @aux_resource
     end
     
