@@ -13,7 +13,7 @@ module BaseMaterialx
       @parts = @parts.where(:sub_category_id => @sub_category_id) if @sub_category_id 
       @parts = @parts.where(aux_resource: @aux_resource) if @aux_resource     
       @parts = @parts.page(params[:page]).per_page(@max_pagination) 
-      @erb_code = find_config_const('part_index_view', 'base_materialx') if @aux_resource.blank?
+      @erb_code = find_config_const('part_index_view', 'base_materialx') unless @aux_resource
       @erb_code = find_config_const('part_' + @aux_model + '_index_view', 'base_materialx') if @aux_resource
     end
   
