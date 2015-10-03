@@ -4,7 +4,7 @@ module BaseMaterialx
 
     model_name = Authentify::AuthentifyUtility.find_config_const('aux_resource', 'base_materialx')  #cob_orderx/orders
     model_name.split(',').each do |a|
-      has_one a.sub(/.+\//,'').singularize.to_sym, class_name: a.camelize.singularize.to_s, dependent: :destroy, autosave: true
+      has_one a.sub(/.+\//,'').singularize.to_sym, class_name: a.camelize.singularize.to_s, dependent: :destroy, autosave: true, validate: true
     end if model_name.present?
     belongs_to :category, :class_name => BaseMaterialx.category_class.to_s
     belongs_to :sub_category, :class_name => BaseMaterialx.sub_category_class.to_s
