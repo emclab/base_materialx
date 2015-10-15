@@ -142,5 +142,46 @@ module BaseMaterialx
         expect(response).to be_success
       end
     end
+    
+    describe "GET 'autocomplete_name_part_num'" do
+      it "returns http success" do
+        user_access = FactoryGirl.create(:user_access, :action => 'autocomplete_name_part_num', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+        session[:user_id] = @u.id
+        get 'autocomplete_name_part_num'
+        expect(response).to be_success
+      end
+    end
+    
+    describe "GET 'autocomplete_name'" do
+      it "returns http success" do
+        user_access = FactoryGirl.create(:user_access, :action => 'autocomplete_name', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+        session[:user_id] = @u.id
+        get 'autocomplete_name'
+        expect(response).to be_success
+      end
+    end
+    
+    describe "GET 'autocomplete'" do
+      it "returns http success" do
+        user_access = FactoryGirl.create(:user_access, :action => 'autocomplete', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+        session[:user_id] = @u.id
+        get 'autocomplete'
+        expect(response).to be_success
+      end
+    end
+    
+    describe "GET 'autocomplete_part_num'" do
+      it "returns http success" do
+        user_access = FactoryGirl.create(:user_access, :action => 'autocomplete_part_num', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+        session[:user_id] = @u.id
+        get 'autocomplete_part_num'
+        expect(response).to be_success
+      end
+    end
+        
   end
 end
