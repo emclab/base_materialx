@@ -37,7 +37,7 @@ module BaseMaterialx
         if params[:part][aux_model.to_sym].present?   #fields presented in views
           aux_obj = @part.send("build_#{aux_model}")
           params[:part][aux_model.to_sym].each do |k, v|
-            aux_obj[k.to_sym] = v if v.present?
+            aux_obj[k.to_sym] = v if v.present? && aux_obj.has_attribute?(k.to_sym)
           end
         end
       end
