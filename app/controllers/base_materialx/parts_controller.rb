@@ -21,8 +21,6 @@ module BaseMaterialx
       @title = t('New Base Part')
       @part = BaseMaterialx::Part.new()
       @part.send("build_#{@aux_resource.sub(/.+\//,'').singularize.to_s}") if @aux_resource
-      @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
-      @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
       @erb_code = find_config_const('part_new_view', 'base_materialx') unless @aux_resource
       @erb_code = find_config_const('part_' + @aux_model + '_new_view', 'base_materialx') if @aux_resource
       @aux_erb_code = find_config_const(@aux_model + '_new_view', @aux_engine) if @aux_resource  #cob_info_new_view, cob_orderx
@@ -48,8 +46,6 @@ module BaseMaterialx
           redirect_to new_part_url, notice: I18n.t('Successfully Saved!')
         end
       else
-        @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
-        @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
         @erb_code = find_config_const('part_new_view', 'base_materialx') if params[:part][:aux_resource].blank? 
         @erb_code = find_config_const('part_' + @aux_model + '_new_view', 'base_materialx') if params[:part][:aux_resource].present? 
         @aux_erb_code = find_config_const(aux_model + '_new_view', @aux_engine) if params[:part][:aux_resource].present?
@@ -63,8 +59,6 @@ module BaseMaterialx
     def edit
       @title = t('Update Base Part')
       @part = BaseMaterialx::Part.find_by_id(params[:id])
-      @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
-      @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
       @erb_code = find_config_const('part_edit_view', 'base_materialx') unless @aux_resource
       @erb_code = find_config_const('part_' + @aux_model + '_edit_view', 'base_materialx') if @aux_resource
       @aux_erb_code = find_config_const(@aux_model + '_edit_view', @aux_engine) if @aux_resource
@@ -86,8 +80,6 @@ module BaseMaterialx
       if @part.update_attributes(edit_params)
         redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       else
-        @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
-        @qty_unit = Commonx::MiscDefinition.where(:for_which => 'piece_unit') if find_config_const('piece_unit').blank?
         @erb_code = find_config_const('part_edit_view', 'base_materialx') unless @aux_resource
         @erb_code = find_config_const('part_' + @aux_model + '_edit_view', 'base_materialx') if @aux_resource
         @aux_erb_code = find_config_const(@aux_model + '_edit_view', @aux_engine) if @aux_resource
@@ -127,6 +119,8 @@ module BaseMaterialx
       
     protected
     def load_parent_record
+      @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
+      @qty_unit = Commonx::CommonxHelper.return_misc_definitions('piece_unit') if find_config_const('piece_unit').blank?
       @category_id = params[:category_id] if params[:category_id].present?
       @sub_category_id = params[:sub_category_id] if params[:sub_category_id].present?
       @aux_resource = params[:aux_resource].strip if params[:aux_resource]  #cob_orderx/cob_orders
