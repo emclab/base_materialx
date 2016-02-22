@@ -133,12 +133,12 @@ module BaseMaterialx
     
     def new_params
       params.require(:part).permit(:active, :category_id, :desp, :unit, :last_updated_by_id, :name, :preferred_mfr, :preferred_supplier, :spec, :sub_category_id, :wf_state,
-                    :part_num, :aux_resource)
+                    :part_num, :aux_resource, :i_unit_id)
     end
     
     def edit_params
       params.require(:part).permit(:active, :category_id, :desp, :unit, :last_updated_by_id, :name, :preferred_mfr, :preferred_supplier, :spec, :sub_category_id, :wf_state,
-                    :part_num)
+                    :part_num, :i_unit_id)
     end
     
     def clean_page

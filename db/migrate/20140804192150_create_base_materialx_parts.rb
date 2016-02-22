@@ -15,6 +15,7 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
       t.boolean :active, :default => true
       t.timestamps
       t.string :aux_resource
+      t.integer :i_unit_id  #integer unit id
     end
     
     add_index :base_materialx_parts, :name
