@@ -37,6 +37,16 @@ module BaseMaterialx
         expect(assigns(:parts)).to match_array([task1, task])
       end
       
+      it "should only return the part for a flag" do
+        user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
+        session[:user_id] = @u.id
+        task = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id, :part_num => nil, :flag => 'whs')
+        task1 = FactoryGirl.create(:base_materialx_part, :category_id => @cate.id + 1, :name => 'a new task')
+        get 'index', {:flag => 'whs'}
+        expect(assigns(:parts)).to  match_array([task])
+      end
+      
       it "should only return the part for a category_id" do
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'base_materialx_parts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "BaseMaterialx::Part.where(:active => true).order('created_at DESC')")
