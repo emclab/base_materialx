@@ -15,6 +15,10 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
       t.boolean :active, :default => true
       t.timestamps
       t.string :aux_resource
+      t.integer :i_unit_id  #integer unit id
+      t.decimal :min_stock_qty, :precision => 10, :scale => 2
+      t.string :flag  #for case of more than one base material. ex, One is for products in warehouse (flag ='whs'), another is for products produced (flag='prod') 
+      t.text :note
     end
     
     add_index :base_materialx_parts, :name
@@ -25,5 +29,6 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
     add_index :base_materialx_parts, :wf_state
     add_index :base_materialx_parts, :active
     add_index :base_materialx_parts, :aux_resource
+    add_index :base_materialx_parts, :flag
   end
 end

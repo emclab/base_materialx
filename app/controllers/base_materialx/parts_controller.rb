@@ -9,7 +9,8 @@ module BaseMaterialx
     def index
       @title = t('Base Parts')
       @parts = params[:base_materialx_parts][:model_ar_r]  #returned by check_access_right
-      @parts = @parts.where(:category_id => @category_id) if @category_id      
+      @parts = @parts.where(:category_id => @category_id) if @category_id  
+      @parts = @parts.where(:flag => @flag) if @flag          
       @parts = @parts.where(:sub_category_id => @sub_category_id) if @sub_category_id 
       @parts = @parts.where(aux_resource: @aux_resource) if @aux_resource     
       @parts = @parts.page(params[:page]).per_page(@max_pagination) 
@@ -121,6 +122,8 @@ module BaseMaterialx
     def load_parent_record
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
       @qty_unit = Commonx::CommonxHelper.return_misc_definitions('piece_unit') if find_config_const('piece_unit').blank?
+      @flag = params[:flag].strip if params[:flag].present?
+      @flag = params[:part][:flag].strip if params[:part].present? && params[:part][:flag].present?
       @category_id = params[:category_id] if params[:category_id].present?
       @sub_category_id = params[:sub_category_id] if params[:sub_category_id].present?
       @aux_resource = params[:aux_resource].strip if params[:aux_resource]  #cob_orderx/cob_orders
@@ -133,12 +136,12 @@ module BaseMaterialx
     
     def new_params
       params.require(:part).permit(:active, :category_id, :desp, :unit, :last_updated_by_id, :name, :preferred_mfr, :preferred_supplier, :spec, :sub_category_id, :wf_state,
-                    :part_num, :aux_resource)
+                    :part_num, :aux_resource, :i_unit_id, :min_stock_qty, :flag, :note)
     end
     
     def edit_params
       params.require(:part).permit(:active, :category_id, :desp, :unit, :last_updated_by_id, :name, :preferred_mfr, :preferred_supplier, :spec, :sub_category_id, :wf_state,
-                    :part_num)
+                    :part_num, :i_unit_id, :min_stock_qty, :note)
     end
     
     def clean_page

@@ -12,9 +12,24 @@ module BaseMaterialx
       expect(c).not_to be_valid
     end
     
-    it "should reject nil unit" do
+    it "should take nil unit" do
       c = FactoryGirl.build(:base_materialx_part, :unit => nil)
-      expect(c).not_to be_valid
+      expect(c).to be_valid
+    end
+    
+    it "should take nil flag" do
+      c = FactoryGirl.build(:base_materialx_part, :flag => nil)
+      expect(c).to be_valid
+    end
+    
+    it "should take nil min_stock_qty" do
+      c = FactoryGirl.build(:base_materialx_part, :min_stock_qty => nil)
+      expect(c).to be_valid
+    end
+    
+    it "should take 0 min_stock_qty" do
+      c = FactoryGirl.build(:base_materialx_part, :min_stock_qty => 0)
+      expect(c).to be_valid
     end
     
     it "should reject nil spec" do

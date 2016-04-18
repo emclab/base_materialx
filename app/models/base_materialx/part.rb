@@ -9,11 +9,15 @@ module BaseMaterialx
     end if model_name.present?
     belongs_to :category, :class_name => BaseMaterialx.category_class.to_s
     belongs_to :sub_category, :class_name => BaseMaterialx.sub_category_class.to_s
-    belongs_to :last_updated_by, :class_name => 'Authentify::User'   
+    belongs_to :last_updated_by, :class_name => 'Authentify::User' 
+    belongs_to :i_unit, :class_name => 'Commonx::MiscDefinition'
+      
                     
-    validates :name, :spec, :unit, :presence => true
+    validates :name, :spec, :presence => true
     validates :category_id, :numericality => {:only_integer => true, :greater_than => 0}, :if => 'category_id.present?'  
     validates :sub_category_id, :numericality => {:only_integer => true, :greater_than => 0}, :if => 'sub_category_id.present?'  
+    validates :i_unit_id, :numericality => {:only_integer => true, :greater_than => 0}, :if => 'i_unit_id.present?'  
+    validates :min_stock_qty, :numericality => {:greater_than_or_equal_to => 0}, :if => 'min_stock_qty.present?'  
     validates :name, :uniqueness => {:scope => :spec, :case_sensitive => false, :message => I18n.t('Duplicate Name!')}
     validates :part_num, :uniqueness => {:scope => :spec, :case_sensitive => false, :message => I18n.t('Duplicate Part#!')}, :if => 'part_num.present?'
     validate :dynamic_validate 
