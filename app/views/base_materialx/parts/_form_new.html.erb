@@ -1,4 +1,4 @@
-<% if @view_in_config && @erb_code %>
+<% if  @erb_code %>
   <%= render inline: @erb_code %>
   
   <% else %>
@@ -32,8 +32,8 @@
            <%= f.input :aux_resource, :as => :hidden, :input_html => {:value => @aux_resource} if @aux_resource %>
            <%= render inline: @aux_erb_code, locals: {f: f} if @aux_erb_code %>
 
-      <div class="form-actions col-sm-offset-<%=BUTTONS_CLS['offset#']%>" >
-          <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+      <div class="btn-toolbar" >
+          <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
           <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>    
       </div> 
 

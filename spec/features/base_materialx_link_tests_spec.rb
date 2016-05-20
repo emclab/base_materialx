@@ -26,6 +26,7 @@ RSpec.describe "LinkTests", type: :request do
                  'form-span#'         => '4'
         }
     before(:each) do
+      config_entry = FactoryGirl.create(:engine_config, :engine_name => 'rails_app', :engine_version => nil, :argument_name => 'SESSION_TIMEOUT_MINUTES', :argument_value => 30)
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       piece_unit = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'piece_unit', :argument_value => "set, piece")
       z = FactoryGirl.create(:zone, :zone_name => 'hq')

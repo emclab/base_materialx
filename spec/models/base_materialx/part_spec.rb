@@ -12,6 +12,11 @@ module BaseMaterialx
       expect(c).not_to be_valid
     end
     
+    it "should reject nil fort_token" do
+      c = FactoryGirl.build(:base_materialx_part, :fort_token => nil)
+      expect(c).not_to be_valid
+    end
+    
     it "should take nil unit" do
       c = FactoryGirl.build(:base_materialx_part, :unit => nil)
       expect(c).to be_valid
@@ -66,6 +71,12 @@ module BaseMaterialx
     it "should allow dup name for different spec" do
       c = FactoryGirl.create(:base_materialx_part, :name => "nil", :spec => 'new new spec')
       c1 = FactoryGirl.build(:base_materialx_part, :name => "Nil", :spec => 'spec')
+      expect(c1).to be_valid
+    end
+    
+    it "should allow dup name & spec for different token" do
+      c = FactoryGirl.create(:base_materialx_part, :name => "nil", :spec => 'spec')
+      c1 = FactoryGirl.build(:base_materialx_part, :name => "Nil", :spec => 'spec', :fort_token => c.fort_token + 'new')
       expect(c1).to be_valid
     end
     

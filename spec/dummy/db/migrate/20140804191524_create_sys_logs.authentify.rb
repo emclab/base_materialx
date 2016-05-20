@@ -7,6 +7,7 @@ class CreateSysLogs < ActiveRecord::Migration
       t.string :user_name
       t.string :user_ip
       t.string :action_logged
+      t.string :fort_token
 
     end
     

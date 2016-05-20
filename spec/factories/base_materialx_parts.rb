@@ -14,5 +14,6 @@ FactoryGirl.define do
     #last_updated_by_id 1
     wf_state "MyString"
     active true
+    fort_token '123456789'
   end
 end

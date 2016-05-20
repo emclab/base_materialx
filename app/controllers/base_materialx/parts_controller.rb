@@ -5,6 +5,8 @@ module BaseMaterialx
   class PartsController < ApplicationController
     before_action :require_employee
     before_action :load_parent_record
+    
+    helper_method :return_misc_definitions 
         
     def index
       @title = t('Base Parts')
@@ -14,22 +16,23 @@ module BaseMaterialx
       @parts = @parts.where(:sub_category_id => @sub_category_id) if @sub_category_id 
       @parts = @parts.where(aux_resource: @aux_resource) if @aux_resource     
       @parts = @parts.page(params[:page]).per_page(@max_pagination) 
-      @erb_code = find_config_const('part_index_view', 'base_materialx') unless @aux_resource
-      @erb_code = find_config_const('part_' + @aux_model + '_index_view', 'base_materialx') if @aux_resource
+      @erb_code = find_config_const('part_index_view', session[:fort_token], 'base_materialx') unless @aux_resource
+      @erb_code = find_config_const('part_' + @aux_model + '_index_view', session[:fort_token], 'base_materialx') if @aux_resource
     end
   
     def new
       @title = t('New Base Part')
       @part = BaseMaterialx::Part.new()
       @part.send("build_#{@aux_resource.sub(/.+\//,'').singularize.to_s}") if @aux_resource
-      @erb_code = find_config_const('part_new_view', 'base_materialx') unless @aux_resource
-      @erb_code = find_config_const('part_' + @aux_model + '_new_view', 'base_materialx') if @aux_resource
-      @aux_erb_code = find_config_const(@aux_model + '_new_view', @aux_engine) if @aux_resource  #cob_info_new_view, cob_orderx
-      @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') 
+      @erb_code = find_config_const('part_new_view', session[:fort_token], 'base_materialx') unless @aux_resource
+      @erb_code = find_config_const('part_' + @aux_model + '_new_view', session[:fort_token], 'base_materialx') if @aux_resource
+      @aux_erb_code = find_config_const(@aux_model + '_new_view', session[:fort_token], @aux_engine) if @aux_resource  #cob_info_new_view, cob_orderx
+      @js_erb_code = find_config_const('part_new_js_view', session[:fort_token], 'base_materialx') 
     end
   
     def create
       @part = BaseMaterialx::Part.new(new_params)
+      @part.fort_token = session[:fort_token]
       @part.last_updated_by_id = session[:user_id]
       if params[:part][:aux_resource].present?
         aux_model = params[:part][:aux_resource].strip.sub(/.+\//,'').singularize.to_s
@@ -47,11 +50,10 @@ module BaseMaterialx
           redirect_to new_part_url, notice: I18n.t('Successfully Saved!')
         end
       else
-        @erb_code = find_config_const('part_new_view', 'base_materialx') if params[:part][:aux_resource].blank? 
-        @erb_code = find_config_const('part_' + @aux_model + '_new_view', 'base_materialx') if params[:part][:aux_resource].present? 
-        @aux_erb_code = find_config_const(aux_model + '_new_view', @aux_engine) if params[:part][:aux_resource].present?
-        @js_erb_code = find_config_const('part_new_js_view', 'base_materialx') #if params[:part][:aux_resource].blank?
-        #@js_erb_code = find_config_const('part_' + aux_model + '_new_js_view', 'base_materialx') if params[:part][:aux_resource].present?
+        @erb_code = find_config_const('part_new_view', session[:fort_token], 'base_materialx') if params[:part][:aux_resource].blank? 
+        @erb_code = find_config_const('part_' + @aux_model + '_new_view', session[:fort_token], 'base_materialx') if params[:part][:aux_resource].present? 
+        @aux_erb_code = find_config_const(aux_model + '_new_view', session[:fort_token], @aux_engine) if params[:part][:aux_resource].present?
+        @js_erb_code = find_config_const('part_new_js_view', session[:fort_token], 'base_materialx') #if params[:part][:aux_resource].blank?
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
       end
@@ -60,10 +62,10 @@ module BaseMaterialx
     def edit
       @title = t('Update Base Part')
       @part = BaseMaterialx::Part.find_by_id(params[:id])
-      @erb_code = find_config_const('part_edit_view', 'base_materialx') unless @aux_resource
-      @erb_code = find_config_const('part_' + @aux_model + '_edit_view', 'base_materialx') if @aux_resource
-      @aux_erb_code = find_config_const(@aux_model + '_edit_view', @aux_engine) if @aux_resource
-      @js_erb_code = find_config_const('part_edit_js_view', 'base_materialx') 
+      @erb_code = find_config_const('part_edit_view', session[:fort_token], 'base_materialx') unless @aux_resource
+      @erb_code = find_config_const('part_' + @aux_model + '_edit_view', session[:fort_token], 'base_materialx') if @aux_resource
+      @aux_erb_code = find_config_const(@aux_model + '_edit_view', session[:fort_token], @aux_engine) if @aux_resource
+      @js_erb_code = find_config_const('part_edit_js_view', session[:fort_token], 'base_materialx') 
     end
   
     def update
@@ -81,10 +83,10 @@ module BaseMaterialx
       if @part.update_attributes(edit_params)
         redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       else
-        @erb_code = find_config_const('part_edit_view', 'base_materialx') unless @aux_resource
-        @erb_code = find_config_const('part_' + @aux_model + '_edit_view', 'base_materialx') if @aux_resource
-        @aux_erb_code = find_config_const(@aux_model + '_edit_view', @aux_engine) if @aux_resource
-        @js_erb_code = find_config_const('part_edit_js_view', 'base_materialx') 
+        @erb_code = find_config_const('part_edit_view', session[:fort_token], 'base_materialx') unless @aux_resource
+        @erb_code = find_config_const('part_' + @aux_model + '_edit_view', session[:fort_token], 'base_materialx') if @aux_resource
+        @aux_erb_code = find_config_const(@aux_model + '_edit_view', session[:fort_token], @aux_engine) if @aux_resource
+        @js_erb_code = find_config_const('part_edit_js_view', session[:fort_token], 'base_materialx') 
         flash[:notice] = t('Data Error. Not Updated!')
         render 'edit'
       end
@@ -93,9 +95,9 @@ module BaseMaterialx
     def show
       @title = t('Base Part Info')
       @part = BaseMaterialx::Part.find_by_id(params[:id])
-      @erb_code = find_config_const('part_show_view', 'base_materialx') unless @aux_resource  
-      @erb_code = find_config_const('part_' + @aux_model + '_show_view', 'base_materialx') if @aux_resource  
-      @aux_erb_code = find_config_const(@aux_model + '_show_view', @aux_engine) if @aux_resource
+      @erb_code = find_config_const('part_show_view', session[:fort_token], 'base_materialx') unless @aux_resource  
+      @erb_code = find_config_const('part_' + @aux_model + '_show_view', session[:fort_token], 'base_materialx') if @aux_resource  
+      @aux_erb_code = find_config_const(@aux_model + '_show_view', session[:fort_token], @aux_engine) if @aux_resource
     end
     
     def autocomplete
@@ -120,8 +122,9 @@ module BaseMaterialx
       
     protected
     def load_parent_record
-      @qty_unit = find_config_const('piece_unit').split(',').map(&:strip) if find_config_const('piece_unit').present?
-      @qty_unit = Commonx::CommonxHelper.return_misc_definitions('piece_unit') if find_config_const('piece_unit').blank?
+      qty_str = find_config_const('piece_unit', session[:fort_token])
+      @qty_unit = qty_str.split(',').map(&:strip) if qty_str.present?
+      @qty_unit = return_misc_definitions('piece_unit') if qty_str.blank?
       @flag = params[:flag].strip if params[:flag].present?
       @flag = params[:part][:flag].strip if params[:part].present? && params[:part][:flag].present?
       @category_id = params[:category_id] if params[:category_id].present?

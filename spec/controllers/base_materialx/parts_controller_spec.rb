@@ -9,6 +9,7 @@ module BaseMaterialx
            
     end
     before(:each) do
+      config_entry = FactoryGirl.create(:engine_config, :engine_name => 'rails_app', :engine_version => nil, :argument_name => 'SESSION_TIMEOUT_MINUTES', :argument_value => 30)
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       piece = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'piece_unit', :argument_value => "set, piece")
       z = FactoryGirl.create(:zone, :zone_name => 'hq')
@@ -22,6 +23,8 @@ module BaseMaterialx
       @cate = FactoryGirl.create(:commonx_misc_definition, 'for_which' => 'base_part_category')
       
       session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids
+      
+      session[:fort_token] = @u.fort_token
     end
     
     render_views

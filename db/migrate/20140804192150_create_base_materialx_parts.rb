@@ -19,6 +19,7 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
       t.decimal :min_stock_qty, :precision => 10, :scale => 2
       t.string :flag  #for case of more than one base material. ex, One is for products in warehouse (flag ='whs'), another is for products produced (flag='prod') 
       t.text :note
+      t.string :fort_token
     end
     
     add_index :base_materialx_parts, :name
@@ -30,5 +31,6 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
     add_index :base_materialx_parts, :active
     add_index :base_materialx_parts, :aux_resource
     add_index :base_materialx_parts, :flag
+    add_index :base_materialx_parts, :fort_token
   end
 end

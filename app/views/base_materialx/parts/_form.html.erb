@@ -1,4 +1,4 @@
-<% if @view_in_config && @erb_code %>
+<% if  @erb_code %>
   <%= render inline: @erb_code %>
   
   <% else %>
@@ -22,7 +22,7 @@
   <%= f.input :name, :label => t('Part Name'), :readonly => readonly?(@part, 'name') %>  
   <%= f.input :part_num, :label => t('Part#'), :readonly => readonly?(@part, 'part_num') %>
   <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3}, :readonly => readonly?(@part, 'spec') %>
-  <%= f.input :unit, :label => t('Qty Unit'), :collection => Commonx::CommonxHelper.return_misc_definitions('piece_unit').pluck('name').join(',').split(',').map(&:strip), :readonly => readonly?(@part, 'unit') %>
+  <%= f.input :unit, :label => t('Qty Unit'), :collection => return_misc_definitions('piece_unit').pluck('name').join(',').split(',').map(&:strip), :readonly => readonly?(@part, 'unit') %>
   <%= f.input :category_id, :label => t('Part Category'), :collection => TwoTierDefinitionx::Definition.where('active = ? AND for_which = ?', true, 'material_category').order('ranking_index'), :include_blank => true %>
   <%= f.input :sub_category_id, :label => t('Part Sub Category'), :collection => TwoTierDefinitionx::SubDefinition.where(active: true).order('ranking_index') %>
   <%= f.input :preferred_supplier, :label => t('Preferred Supplier'), :input_html => {:rows => 2}, :readonly => readonly?(@part, 'preferred_supplier') %>
@@ -33,8 +33,8 @@
   <%= f.input :field_changed, :as => :hidden %> 
   <%= render inline: @aux_erb_code, locals: {f: f} if @aux_erb_code %>
  
-  <div class="form-actions col-sm-offset-<%=BUTTONS_CLS['offset#']%>" > 
-    <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <div class="btn-toolbar" > 
+    <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
     <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
   </div> 
   

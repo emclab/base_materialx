@@ -1,4 +1,4 @@
-<% if @view_in_config && @js_erb_code %>
+<% if  @js_erb_code %>
   <%= render inline: ERB.new(@js_erb_code).result(binding) %>
   
 <% else %>

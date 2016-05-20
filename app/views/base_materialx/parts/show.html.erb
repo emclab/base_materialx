@@ -1,8 +1,7 @@
-<% if @view_in_config && @erb_code %>
+<% if  @erb_code %>
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
   <% else %>
-<div id="main_body">
 <div class="container">
   <div class="page-header clearfix">
       <div class="pull-left">
@@ -111,11 +110,11 @@
    </div>
  </div>
  <div class="btn-toolbar">
- 	  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+ 	  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
   	  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @part.id, :resource_name => params[:controller], :subaction => 'base_part', :format => :js), :remote => true, 
                           :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_base_part', 'commonx/logs') %>
   </div>	
-</div>
+
 </div>
 
 <% end %>
