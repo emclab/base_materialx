@@ -15,6 +15,8 @@ module BaseMaterialx
     before_action :view_in_config?
     before_action :page_params, :only => :index    
     
+    helper_method :return_users, :return_misc_definitions
+    
     protected
   
     def max_pagination
