@@ -9,6 +9,13 @@ $(function (){
 });
 
 $(function() {
-	$("#part_start_date_s").datepicker({dateFormat: 'yy-mm-dd'});
-    $("#part_end_date_s").datepicker({dateFormat: 'yy-mm-dd'});
+	$("#start_date_s").datepicker({dateFormat: 'yy-mm-dd'});
+    $("#end_date_s").datepicker({dateFormat: 'yy-mm-dd'});
+});
+
+$(function() {
+  $(document).on('change', '#part_flag', function (){  //only document/'body' works with every change. 
+  	$.get(window.location, {flag: $('#part_flag').val(), field_changed: 'flag'}, null, "script");
+    return false;
+  });
 });

@@ -2,7 +2,7 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
   def change
     create_table :base_materialx_parts do |t|
       t.string :name
-      t.string :spec
+      t.text :spec
       t.string :part_num
       t.string :unit
       t.text :desp
@@ -20,6 +20,8 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
       t.string :flag  #for case of more than one base material. ex, One is for products in warehouse (flag ='whs'), another is for products produced (flag='prod') 
       t.text :note
       t.string :fort_token
+      t.text :document_related
+      t.integer :customer_id
     end
     
     add_index :base_materialx_parts, :name
@@ -32,5 +34,6 @@ class CreateBaseMaterialxParts < ActiveRecord::Migration
     add_index :base_materialx_parts, :aux_resource
     add_index :base_materialx_parts, :flag
     add_index :base_materialx_parts, :fort_token
+    add_index :base_materialx_parts, :customer_id
   end
 end

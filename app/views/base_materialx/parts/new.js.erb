@@ -14,5 +14,17 @@
   $('#part_field_changed').val('');
 <% end %>
 
+<% if params[:field_changed] == 'flag' && params[:flag].present?  %>
+  <% @erb_code = find_config_const('part_new_view_' + params[:flag].strip, session[:fort_token], 'base_materialx') %>
+  $('#new_page').html("<%= escape_javascript render partial: 'form_new'} %>");
+  $('#part_flag').val("<%=params[:flag]%>");
+  $('#field_changed').val('');
+<% elsif params[:field_changed] == 'flag' && params[:flag].blank? %>
+  <% @erb_code = find_config_const('part_new_view', session[:fort_token], 'base_materialx') %>
+  $('#new_page').html("<%= escape_javascript render partial: 'form_new'} %>");
+  $('#part_flag').val("<%=params[:flag]%>");
+  $('#field_changed').val('');
+<% end %>
+
 
 <% end %>

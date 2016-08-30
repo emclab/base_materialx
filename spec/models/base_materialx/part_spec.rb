@@ -37,6 +37,11 @@ module BaseMaterialx
       expect(c).to be_valid
     end
     
+    it "should reject 0 customer_id" do
+      c = FactoryGirl.build(:base_materialx_part, :customer_id => 0)
+      expect(c).not_to be_valid
+    end
+    
     it "should reject nil spec" do
       c = FactoryGirl.build(:base_materialx_part, :spec => nil)
       expect(c).not_to be_valid
