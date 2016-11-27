@@ -99,22 +99,22 @@ module BaseMaterialx
     end
     
     def autocomplete
-      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
+      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%").limit(16)
       render json: @parts.map {|f| "#{f.name} -    #{f.spec}"}    #return string of 2 fields. format []-[][][][]    
     end
     
     def autocomplete_part_num
-      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("part_num like ?", "%#{params[:term]}%")
+      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("part_num like ?", "%#{params[:term]}%").limit(16)
       render json: @parts.map {|f| "#{f.name} -    #{f.part_num}"}    #return string of 2 fields. format []-[][][][]    
     end
     
     def autocomplete_name_part_num
-      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
+      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%").limit(16)
       render json: @parts.map {|f| "#{f.name} -    #{f.part_num}"}    #return string of 2 fields. format []-[][][][]    
     end
     
     def autocomplete_name
-      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%")
+      @parts = BaseMaterialx::Part.where("active = ?", true).order(:name).where("name like ?", "%#{params[:term]}%").limit(16)
       render json: @parts.map {|f| "#{f.name}"}    #return name only    
     end
       
