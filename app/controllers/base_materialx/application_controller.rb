@@ -19,7 +19,7 @@ module BaseMaterialx
     protected
   
     def max_pagination
-      @max_pagination = find_config_const('pagination', session[:fort_token])
+      @max_pagination = find_config_const('pagination', session[:fort_token]).to_i
     end
   end 
 end
